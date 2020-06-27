@@ -23,8 +23,10 @@ public:
     };
 
     Token(TOKENTYPE T, std::string Value) {
-         value = Value;
-         tokenType = T;
+        value = Value;
+        tokenType = T;
+         
+        std::cout << "Token(" << EnumToString(tokenType) << ", " << value << ")\n";
     }
 
     friend std::ostream& operator<<(std::ostream &os, Token& t) {

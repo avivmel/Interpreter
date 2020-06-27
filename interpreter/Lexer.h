@@ -89,43 +89,43 @@ public:
             
             if (isdigit(current_char)) {
                 Token token = Token(TOKENTYPE::INTEGER, integer());
-                std::cout << token << "\n";
+                // std::cout << token << "\n";
                 return token;
             }
             if (current_char == '+') {
                 Token token = Token(TOKENTYPE::PLUS, std::string(1, current_char));
                 advance();
-                std::cout << token << "\n";
+                // std::cout << token << "\n";
                 return token;
             }
             if (current_char == '-') {
                 Token token = Token(TOKENTYPE::MINUS, std::string(1, current_char));
                 advance();
-                std::cout << token << "\n";
+                // std::cout << token << "\n";
                 return token;
             }
             if (current_char == '*') {
                 Token token = Token(TOKENTYPE::MUL, std::string(1, current_char));
                 advance();
-                std::cout << token << "\n";
+                // std::cout << token << "\n";
                 return token;
             }
             if (current_char == '/') {
                 Token token = Token(TOKENTYPE::DIV, std::string(1, current_char));
                 advance();
-                std::cout << token << "\n";
+                // std::cout << token << "\n";
                 return token;
             }
             if (current_char == '(') {
                 Token token = Token(TOKENTYPE::LPAREN, std::string(1, current_char));
                 advance();
-                std::cout << token << "\n";
+                // std::cout << token << "\n";
                 return token;
             }
             if (current_char == ')') {
                 Token token = Token(TOKENTYPE::RPAREN, std::string(1, current_char));
                 advance();
-                std::cout << token << "\n";
+                // std::cout << token << "\n";
                 return token;
             }
 

@@ -17,6 +17,7 @@ enum class TOKENTYPE {
     DIV,
     LPAREN,
     RPAREN,
+    EMPTY,
     EOL
 };
 
@@ -38,6 +39,8 @@ std::string EnumToString(TOKENTYPE tokenType) {
             return "LPAREN";
         case TOKENTYPE::RPAREN:
             return "RPAREN";
+        case TOKENTYPE::EMPTY:
+            return "EMPTY";
         case TOKENTYPE::EOL:
             return "EOL";
     }

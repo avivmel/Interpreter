@@ -25,6 +25,9 @@
 /* Begin PBXFileReference section */
 		085EDECF24A2671F003969C6 /* interpreter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = interpreter; sourceTree = BUILT_PRODUCTS_DIR; };
 		085EDED224A2671F003969C6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		085EDEDF24A3D0D1003969C6 /* TOKENTYPE.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TOKENTYPE.h; sourceTree = "<group>"; };
+		085EDEE124A41919003969C6 /* Token.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Token.hpp; sourceTree = "<group>"; };
+		085EDEE324A42179003969C6 /* Lexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Lexer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +60,10 @@
 		085EDED124A2671F003969C6 /* interpreter */ = {
 			isa = PBXGroup;
 			children = (
+				085EDEE324A42179003969C6 /* Lexer.h */,
 				085EDED224A2671F003969C6 /* main.cpp */,
+				085EDEDF24A3D0D1003969C6 /* TOKENTYPE.h */,
+				085EDEE124A41919003969C6 /* Token.hpp */,
 			);
 			path = interpreter;
 			sourceTree = "<group>";
