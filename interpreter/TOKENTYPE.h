@@ -6,6 +6,8 @@
 //  Copyright © 2020 Aviv Melamud. All rights reserved.
 //
 
+#include <iostream>
+
 #ifndef TOKENTYPE_h
 #define TOKENTYPE_h
 

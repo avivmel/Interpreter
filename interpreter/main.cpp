@@ -31,8 +31,8 @@ public:
         
     }
     
-    int error() {
-        throw std::runtime_error("error");
+    int error(std::string errorStr) {
+        throw std::runtime_error(errorStr);
     }
     
     
@@ -43,7 +43,7 @@ public:
             //std::cout << currentToken << "\n";
         } else {
             std::cout << "type " << EnumToString(currentToken.tokenType) << " ex " << EnumToString(expectedTokenType) << "\n";
-            error();
+            error("checkAndGetNxt incorrect type");
             
         }
     }
@@ -57,6 +57,15 @@ public:
             ASTNode* node = new ASTNode(NULL, NULL, token);
             return node;
             
+        } else if (token.tokenType == TOKENTYPE::MINUS) {
+            checkAndGetNxt(TOKENTYPE::MINUS);
+            ASTNode* node = new ASTNode(factor(), new ASTNode(NULL, NULL, Token(TOKENTYPE::INTEGER, "-1")), Token(TOKENTYPE::MUL, "*"));
+            return node;
+        } else if (token.tokenType == TOKENTYPE::PLUS) {
+            checkAndGetNxt(TOKENTYPE::PLUS);
+            ASTNode* node = new ASTNode(factor(), new ASTNode(NULL, NULL, Token(TOKENTYPE::INTEGER, "1")), Token(TOKENTYPE::MUL, "*"));
+            return node;
+        
         } else if (token.tokenType == TOKENTYPE::LPAREN) {
             checkAndGetNxt(TOKENTYPE::LPAREN);
             ASTNode* parenContents = evalExpr();
@@ -64,7 +73,7 @@ public:
             return parenContents;
         }
         
-        error();
+        error("Token(" + EnumToString(currentToken.tokenType) + ", " + currentToken.value + ") passed to factor()");
         return 0;
     }
     
@@ -119,9 +128,7 @@ public:
                 checkAndGetNxt(TOKENTYPE::MINUS);
                 //exprVal -= term();
             }
-            ASTNode* exprVal = new ASTNode(termVal, term(), token);
-            return exprVal;
-
+            termVal = new ASTNode(termVal, term(), token);
         }
 
         
@@ -132,6 +139,9 @@ public:
     int visit(ASTNode* node) {
         if (node->token.tokenType == TOKENTYPE::PLUS) {
             return visit(node->left) + visit(node->right);
+        }
+        if (node->token.tokenType == TOKENTYPE::MINUS) {
+            return visit(node->left) - visit(node->right);
         }
         if (node->token.tokenType == TOKENTYPE::MUL) {
             return visit(node->left) * visit(node->right);

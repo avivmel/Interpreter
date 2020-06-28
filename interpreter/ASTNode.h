@@ -13,6 +13,7 @@
 #ifndef ASTNode_h
 #define ASTNode_h
 
+#include <iostream>
 #include "TOKENTYPE.h"
 #include "Token.hpp"
 

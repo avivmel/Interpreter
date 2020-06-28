@@ -9,6 +9,7 @@
 #ifndef Token_hpp
 #define Token_hpp
 
+#include <iostream>
 #include <stdio.h>
 #include "TOKENTYPE.h"
 

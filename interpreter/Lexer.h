@@ -9,6 +9,7 @@
 #ifndef Lexer_h
 #define Lexer_h
 
+#include <iostream>
 #include "TOKENTYPE.h"
 
 class Lexer {
