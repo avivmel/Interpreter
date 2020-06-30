@@ -20,6 +20,9 @@ enum class TOKENTYPE {
     LPAREN,
     RPAREN,
     EMPTY,
+    ASSIGN,
+    ID,
+    SEMI,
     EOL
 };
 
@@ -29,20 +32,31 @@ std::string EnumToString(TOKENTYPE tokenType) {
     switch (tokenType) {
         case TOKENTYPE::INTEGER:
             return "INTEGER";
+
         case TOKENTYPE::PLUS:
             return "PLUS";
         case TOKENTYPE::MINUS:
             return "MINUS";
+
         case TOKENTYPE::MUL:
             return "MUL";
         case TOKENTYPE::DIV:
             return "DIV";
+
         case TOKENTYPE::LPAREN:
             return "LPAREN";
         case TOKENTYPE::RPAREN:
             return "RPAREN";
+
         case TOKENTYPE::EMPTY:
             return "EMPTY";
+
+        case TOKENTYPE::ASSIGN:
+            return "ASSIGN";
+        case TOKENTYPE::ID:
+            return "ID";
+        case TOKENTYPE::SEMI:
+            return "SEMI";
         case TOKENTYPE::EOL:
             return "EOL";
     }

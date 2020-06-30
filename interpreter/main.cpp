@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include <string>
+#include <map>
+#include <vector>
 
 
 #include "TOKENTYPE.h"
@@ -21,6 +23,8 @@ class Interpreter {
 public:
     Lexer lexer;
     Token currentToken;
+    std::map<std::string, int> GLOBAL_SYMBOL_TABLE;
+
 
     
     Interpreter(std::string Text) {
@@ -54,6 +58,11 @@ public:
 
         if (token.tokenType == TOKENTYPE::INTEGER) {
             checkAndGetNxt(TOKENTYPE::INTEGER);
+            ASTNode* node = new ASTNode(NULL, NULL, token);
+            return node;
+            
+        } if (token.tokenType == TOKENTYPE::ID) {
+            checkAndGetNxt(TOKENTYPE::ID);
             ASTNode* node = new ASTNode(NULL, NULL, token);
             return node;
             
@@ -135,19 +144,97 @@ public:
         
         return termVal;
     }
+
+    ASTNode* assignment_statement() {
+
+        if (currentToken.tokenType == TOKENTYPE::ID) {
+            ASTNode* variable = var();
+            return variable;
+        }
+//        else {
+//            ASTNode* expr = evalExpr();
+//            if (expr->token != NULL) {
+//                return expr
+//            }
+//        }
+        ASTNode* expr = evalExpr();
+        std::cout << "xpr " << expr->token << "\n";
+        
+        return expr;
+
+            
+        
+    }
+
+    std::vector<ASTNode*> statements_list() {
+        std::vector<ASTNode*> list;
+        list.push_back(assignment_statement());
+
+        while (currentToken.tokenType == TOKENTYPE::SEMI) {
+            checkAndGetNxt(TOKENTYPE::SEMI);
+//            if (list.size() == 2) {
+//                error("2");
+//            }
+            if (currentToken.value != "") {
+                ASTNode* statement = assignment_statement();
+                
+                if (statement != NULL) {
+                    list.push_back(statement);
+                }
+            }
+            
+        }
+
+        return list;
+        
+    }
+
+    ASTNode* var() {
+        Token token = currentToken;
+
+        if (token.tokenType == TOKENTYPE::ID) {
+            Token id = token;
+            checkAndGetNxt(TOKENTYPE::ID);
+            
+            Token assign = currentToken;
+            checkAndGetNxt(TOKENTYPE::ASSIGN);
+            ASTNode* expr = evalExpr();
+            
+            ASTNode* var_id = new ASTNode(NULL, NULL, id);
+
+            return new ASTNode(var_id, expr, assign);
+        }
+        error("var not found, instead " + EnumToString(token.tokenType) + " was passed");
+        return new ASTNode(NULL, NULL, token);;
+    }
     
-    int visit(ASTNode* node) {
+    int visit_expr(ASTNode* node) {
         if (node->token.tokenType == TOKENTYPE::PLUS) {
-            return visit(node->left) + visit(node->right);
+            return visit_expr(node->left) + visit_expr(node->right);
         }
         if (node->token.tokenType == TOKENTYPE::MINUS) {
-            return visit(node->left) - visit(node->right);
+            return visit_expr(node->left) - visit_expr(node->right);
         }
         if (node->token.tokenType == TOKENTYPE::MUL) {
-            return visit(node->left) * visit(node->right);
+            return visit_expr(node->left) * visit_expr(node->right);
+        }
+        if (node->token.tokenType == TOKENTYPE::DIV) {
+            return visit_expr(node->left) / visit_expr(node->right);
         }
         if (node->token.tokenType == TOKENTYPE::INTEGER) {
             return stoi(node->token.value);
+        }
+        if (node->token.tokenType == TOKENTYPE::ASSIGN) {
+            int expr_val = visit_expr(node->right);
+            GLOBAL_SYMBOL_TABLE[node->left->token.value] = expr_val;
+            return expr_val;
+        }
+        if (node->token.tokenType == TOKENTYPE::ID) {
+            if (GLOBAL_SYMBOL_TABLE.find(node->token.value) != GLOBAL_SYMBOL_TABLE.end()) {
+                return GLOBAL_SYMBOL_TABLE[node->token.value];
+            }
+            error("Variable used not yet defined");
+            return 0;
         }
         return 0;
     }
@@ -196,10 +283,17 @@ int main(int argc, const char * argv[]) {
        getline(std::cin, text);
 
        Interpreter interpreter(text);
-       ASTNode* node2 = interpreter.evalExpr();
-       std::cout << "value = " << interpreter.visit(node2) << "\n\n\n";
-       interpreter.printBT("", node2, false);
-       interpreter.deallocTree(node2);
+       std::vector<ASTNode*> tree = interpreter.statements_list();
+       // std::cout << typeid(tree).name() << "\n";
+
+       //std::cout << "value = " << interpreter.visit_expr(tree[0]->right) << "\n\n\n";
+       for (int i=0; i < tree.size(); i++) {
+           std::cout << tree[i]->left->token.value << " value = " << interpreter.visit_expr(tree[i]) << "\n\n";
+           interpreter.printBT("", tree[i], false);
+           std::cout << "\n";
+       }
+       //interpreter.error(" ");
+       interpreter.deallocTree(tree);
        std::cout << "\n\n";
        //interpreter.error();
    }
