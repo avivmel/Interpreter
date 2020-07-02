@@ -131,7 +131,7 @@ public:
     
     /*
     Expr: term ((PLUS | MINUS) term)*
-    EvalExpr creates an tree from a mathematical expression. PLUS and MINUS are last in the order of operations,
+    EvalExpr creates a tree from a mathematical expression. PLUS and MINUS are last in the order of operations,
     so they must be evaluated first in the tree.
     */
     ASTNode* evalExpr() {
