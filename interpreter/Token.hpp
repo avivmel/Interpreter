@@ -13,6 +13,9 @@
 #include <stdio.h>
 #include "TOKENTYPE.h"
 
+/*
+Represents the smallest element of a program, like a keyword, int, or variable name
+*/
 class Token {
 public:
 
@@ -30,8 +33,8 @@ public:
         // std::cout << "Token(" << EnumToString(tokenType) << ", " << value << ")\n";
     }
 
+    // overload the std::cout operator
     friend std::ostream& operator<<(std::ostream &os, Token& t) {
-
 
         os << "Token(" << EnumToString(t.tokenType) << ", " << t.value << ")";
         return os;

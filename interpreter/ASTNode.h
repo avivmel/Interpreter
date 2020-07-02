@@ -17,6 +17,16 @@
 #include "TOKENTYPE.h"
 #include "Token.hpp"
 
+/* Node object used to construct the abstract syntax tree, which is organized to
+represent correct order of operations and scoping.
+
+For example: 5 + 2 * 4 is represented as:
+└── +
+    ├── 5
+    └── *
+        ├── 2
+        └── 4
+*/
 
 class ASTNode {
     public:

@@ -11,6 +11,9 @@
 #ifndef TOKENTYPE_h
 #define TOKENTYPE_h
 
+/*
+ Defines the type of data a token is storing
+ */
 enum class TOKENTYPE {
     INTEGER,
     PLUS,
@@ -21,7 +24,7 @@ enum class TOKENTYPE {
     RPAREN,
     EMPTY,
     ASSIGN,
-    ID,
+    ID, // name of a variable
     SEMI,
     EOL
 };

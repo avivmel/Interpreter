@@ -42,17 +42,32 @@ public:
     
     
     void checkAndGetNxt(TOKENTYPE expectedTokenType) {
+        /*
+        Checks if the currentToken type attribute matches the type that the parser expects to recieve. 
+        If it dosen't, the 'Unexpected token' error is invoked.
+        */
         if (currentToken.tokenType == expectedTokenType) {
             currentToken = lexer.getNextToken();
             //std::cout << currentToken << "\n";
         } else {
-            std::cout << "type " << EnumToString(currentToken.tokenType) << " ex " << EnumToString(expectedTokenType) << "\n";
+            std::cout << "Unexpected token: type " << EnumToString(currentToken.tokenType) << " expected, got " << EnumToString(expectedTokenType) << "\n";
             error("checkAndGetNxt incorrect type");
             
         }
     }
     
+    /*
+     factor : PLUS factor
+     | MINUS factor
+     | INTEGER
+     | LPAREN expr RPAREN
+     | variable
+     
+     Factor is the smallest part of an expression
+     */
     ASTNode* factor() {
+
+         
         Token token = currentToken;
         // std::cout << "fpre " << token << "\n";
 
@@ -77,6 +92,7 @@ public:
         
         } else if (token.tokenType == TOKENTYPE::LPAREN) {
             checkAndGetNxt(TOKENTYPE::LPAREN);
+            // If an open parenthesies is found, recursivly call the evaluate expression function to find its contents
             ASTNode* parenContents = evalExpr();
             checkAndGetNxt(TOKENTYPE::RPAREN);
             return parenContents;
@@ -87,42 +103,38 @@ public:
     }
     
     
+    /*
+     term: factor ((MUL | DIV) factor)*
+     */
      ASTNode* term() {
-        //Token token = lexer.getNextToken();
-        ASTNode* initalTermVal = factor();
-        //std::cout << "tpre " << termVal << "\n";
+        ASTNode* initalTermVal = factor(); // this is the factor that will multiplied or divided
 
         
         while (currentToken.tokenType == TOKENTYPE::MUL || currentToken.tokenType == TOKENTYPE::DIV) {
             Token token = currentToken;
             if (currentToken.tokenType == TOKENTYPE::MUL) {
                 checkAndGetNxt(TOKENTYPE::MUL);
-                //termVal *= factor();
                 
             }
             if (currentToken.tokenType == TOKENTYPE::DIV) {
                 checkAndGetNxt(TOKENTYPE::DIV);
-                //termVal /= factor();
             }
             ASTNode* termVal = new ASTNode(initalTermVal, factor(), token);
             return termVal;
 
         }
-        return initalTermVal;
+        return initalTermVal; // if no MUL or DIV is found, return the factor
         
 
 
     }
-        
-    ASTNode* evalExpr() {
     
-        
-        /*
-         Parser / Interpreter
-         
-         Detect expressions
-        */
-        
+    /*
+    Expr: term ((PLUS | MINUS) term)*
+    EvalExpr creates an tree from a mathematical expression. PLUS and MINUS are last in the order of operations,
+    so they must be evaluated first in the tree.
+    */
+    ASTNode* evalExpr() {
     
         ASTNode* termVal = term();
         
@@ -130,12 +142,10 @@ public:
             Token token = currentToken;
             if (currentToken.tokenType == TOKENTYPE::PLUS) {
                 checkAndGetNxt(TOKENTYPE::PLUS);
-                //exprVal += term();
                 
             }
             if (currentToken.tokenType == TOKENTYPE::MINUS) {
                 checkAndGetNxt(TOKENTYPE::MINUS);
-                //exprVal -= term();
             }
             termVal = new ASTNode(termVal, term(), token);
         }
@@ -145,18 +155,15 @@ public:
         return termVal;
     }
 
+    /*
+     assignment_statement : variable ASSIGN expr
+     */
     ASTNode* assignment_statement() {
 
         if (currentToken.tokenType == TOKENTYPE::ID) {
             ASTNode* variable = var();
             return variable;
         }
-//        else {
-//            ASTNode* expr = evalExpr();
-//            if (expr->token != NULL) {
-//                return expr
-//            }
-//        }
         ASTNode* expr = evalExpr();
         std::cout << "xpr " << expr->token << "\n";
         
@@ -165,7 +172,13 @@ public:
             
         
     }
-
+    
+    /*
+     statement_list : statement
+                    | statement SEMI statement_list
+     
+     @returns a vector of assignment statements (AST node pointers)
+     */
     std::vector<ASTNode*> statements_list() {
         std::vector<ASTNode*> list;
         list.push_back(assignment_statement());
@@ -189,6 +202,9 @@ public:
         
     }
 
+    /*
+    variable : ID ASSIGN expr
+    */
     ASTNode* var() {
         Token token = currentToken;
 
@@ -208,6 +224,12 @@ public:
         return new ASTNode(NULL, NULL, token);;
     }
     
+    /*
+     @params:
+     node - an assignment statement tree
+     visit_expr recursivly traverses an abstract syntax tree and preforms all operations,
+     and @returns its int value
+     */
     int visit_expr(ASTNode* node) {
         if (node->token.tokenType == TOKENTYPE::PLUS) {
             return visit_expr(node->left) + visit_expr(node->right);
@@ -226,12 +248,12 @@ public:
         }
         if (node->token.tokenType == TOKENTYPE::ASSIGN) {
             int expr_val = visit_expr(node->right);
-            GLOBAL_SYMBOL_TABLE[node->left->token.value] = expr_val;
+            GLOBAL_SYMBOL_TABLE[node->left->token.value] = expr_val; // add variable to symbol table
             return expr_val;
         }
         if (node->token.tokenType == TOKENTYPE::ID) {
-            if (GLOBAL_SYMBOL_TABLE.find(node->token.value) != GLOBAL_SYMBOL_TABLE.end()) {
-                return GLOBAL_SYMBOL_TABLE[node->token.value];
+            if (GLOBAL_SYMBOL_TABLE.find(node->token.value) != GLOBAL_SYMBOL_TABLE.end()) { // check if variable has been initiated
+                return GLOBAL_SYMBOL_TABLE[node->token.value]; // get its value from the symbol table
             }
             error("Variable used not yet defined");
             return 0;
@@ -239,6 +261,10 @@ public:
         return 0;
     }
 
+    /*
+     Recursivly traverses an abstract syntax tree and frees the
+     HEAP memory it takes up
+     */
     void deallocTree(ASTNode* node) {
         if (node->left != NULL) {
             deallocTree(node->left);
@@ -286,23 +312,18 @@ int main(int argc, const char * argv[]) {
        std::vector<ASTNode*> tree = interpreter.statements_list();
        // std::cout << typeid(tree).name() << "\n";
 
-       //std::cout << "value = " << interpreter.visit_expr(tree[0]->right) << "\n\n\n";
        for (int i=0; i < tree.size(); i++) {
            std::cout << tree[i]->left->token.value << " value = " << interpreter.visit_expr(tree[i]) << "\n\n";
            interpreter.printBT("", tree[i], false);
+           interpreter.deallocTree(tree[i]);
            std::cout << "\n";
        }
        //interpreter.error(" ");
-       interpreter.deallocTree(tree);
+       //interpreter.deallocTree(tree);
        std::cout << "\n\n";
        //interpreter.error();
    }
 
-    // ASTNode *n1 = new ASTNode(NULL, NULL, Token(TOKENTYPE::INTEGER, "5"));
-
-    // ASTNode *node2 = new ASTNode(n1, n1, Token(TOKENTYPE::EMPTY, ""));
-
-    //cout node2->left->token
     
 
     

@@ -12,6 +12,10 @@
 #include <iostream>
 #include "TOKENTYPE.h"
 
+/*
+The Lexer class converts a program in text form to a stream of Token objects, accecible
+through the getNextToken method.
+*/
 class Lexer {
 public:
     
@@ -66,7 +70,7 @@ public:
 
     std::string word() {
         /*
-        @Return a (multidigit) integer selected from the text string.
+        @Return a (multiletter) word selected from the text string.
         */
         std::string muliCharWord = "";
         while (current_char != '\0' && isalpha(current_char)) {
