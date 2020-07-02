@@ -48,6 +48,19 @@ public:
             current_char = text[pos];
         }
     }
+
+    /* 
+    @Returns the next character in the programs text
+    */
+    char peek() {
+        if (pos > text.length() - 1) {
+            char nextChar = '\0';
+            return nextChar;
+        } else {
+            char nextChar = text[pos+1];
+            return nextChar;
+        }
+    }
     
     void skip_whitespace() {
         while (current_char != '\0' && current_char == ' ') {
@@ -91,9 +104,20 @@ public:
         
         while (current_char != '\0') {
             
-            //std::cout << "current_char: " << current_char << "\n";
             
-
+            /* Check for comments first, so they can be skipped and
+            the next token after can be returned */
+            
+            if (current_char == '/' && peek() == '*') {
+                advance();
+                advance();
+                
+                while (current_char != '*' && peek() != '/') {
+                    advance();
+                }
+                advance();
+                advance();
+            }
             
             if (pos > text.length() - 1) {
                 return Token(TOKENTYPE::EOL, "");
@@ -104,6 +128,7 @@ public:
                 skip_whitespace();
                 continue;
             }
+            
             
             if (isdigit(current_char)) {
                 Token token = Token(TOKENTYPE::INTEGER, integer());
@@ -120,12 +145,8 @@ public:
                 return token;
             }
             if (current_char == '*') {
+                std::cout << "* at " << pos << " \n";
                 Token token = Token(TOKENTYPE::MUL, std::string(1, current_char));
-                advance();
-                return token;
-            }
-            if (current_char == '/') {
-                Token token = Token(TOKENTYPE::DIV, std::string(1, current_char));
                 advance();
                 return token;
             }

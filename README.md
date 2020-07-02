@@ -6,9 +6,9 @@ This is a simple interpreted programming language implamented in C++.
 The REPL currently only supports assignment statements and mathematical expressions.
 
 ```
->> x = 7 + 3    // 10
->> y = x / 2    // 5
->> z = x + y    // 15
+>> x = 7 + 3    /* 10 */
+>> y = x / 2    /* 5  */
+>> z = x + y    /* 15 */
 ```
 ## Syntax rules in BNF
 ```
