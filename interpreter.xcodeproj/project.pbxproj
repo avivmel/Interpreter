@@ -28,6 +28,8 @@
 		085EDEDF24A3D0D1003969C6 /* TOKENTYPE.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TOKENTYPE.h; sourceTree = "<group>"; };
 		085EDEE124A41919003969C6 /* Token.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Token.hpp; sourceTree = "<group>"; };
 		085EDEE324A42179003969C6 /* Lexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Lexer.h; sourceTree = "<group>"; };
+		086A4F7324AE748300E8BFE2 /* ASTNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASTNode.h; sourceTree = "<group>"; };
+		086A4F7424AE7CB000E8BFE2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +48,7 @@
 			children = (
 				085EDED124A2671F003969C6 /* interpreter */,
 				085EDED024A2671F003969C6 /* Products */,
+				086A4F7424AE7CB000E8BFE2 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +67,7 @@
 				085EDED224A2671F003969C6 /* main.cpp */,
 				085EDEDF24A3D0D1003969C6 /* TOKENTYPE.h */,
 				085EDEE124A41919003969C6 /* Token.hpp */,
+				086A4F7324AE748300E8BFE2 /* ASTNode.h */,
 			);
 			path = interpreter;
 			sourceTree = "<group>";
