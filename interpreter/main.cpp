@@ -17,6 +17,7 @@
 #include "Lexer.h"
 #include "ASTNode.h"
 #include "Parser.h"
+#include "SymbolTable.h"
 
 
 
@@ -34,9 +35,13 @@ int main(int argc, const char * argv[]) {
        Parser parser(text);
        statementsVector* tree = parser.statements_list();
        // std::cout << typeid(tree).name() << "\n";
+       SymbolTable table = SymbolTable();
+       table.addVars(tree);
+       
+       // std::cout << "x type = " << EnumToString(table.GLOBAL_SYMBOL_TABLE["x"]);
+
 
        for (int i=0; i < tree->vector.size(); i++) {
-           
            std::cout << tree->vector[i]->left->token.value << " value = " << parser.visit_expr(tree->vector[i]) << "\n\n";
            std::cout << tree->vector[i];
            parser.deallocTree(tree->vector[i]);

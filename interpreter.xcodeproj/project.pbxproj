@@ -23,6 +23,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		082F047124AFFA22000DB7C5 /* SymbolTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SymbolTable.h; sourceTree = "<group>"; };
+		082F047224AFFA41000DB7C5 /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		085EDECF24A2671F003969C6 /* interpreter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = interpreter; sourceTree = BUILT_PRODUCTS_DIR; };
 		085EDED224A2671F003969C6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		085EDEDF24A3D0D1003969C6 /* TOKENTYPE.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TOKENTYPE.h; sourceTree = "<group>"; };
@@ -68,6 +70,8 @@
 				085EDEDF24A3D0D1003969C6 /* TOKENTYPE.h */,
 				085EDEE124A41919003969C6 /* Token.hpp */,
 				086A4F7324AE748300E8BFE2 /* ASTNode.h */,
+				082F047124AFFA22000DB7C5 /* SymbolTable.h */,
+				082F047224AFFA41000DB7C5 /* Parser.h */,
 			);
 			path = interpreter;
 			sourceTree = "<group>";

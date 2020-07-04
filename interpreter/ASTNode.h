@@ -1,5 +1,5 @@
 //
-//  Lexer.h
+//  ASTNode.h
 //  interpreter
 //
 //  Created by Aviv Melamud on 6/26/20.
