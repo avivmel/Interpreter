@@ -6,9 +6,11 @@ This is a simple interpreted programming language implamented in C++.
 The REPL currently only supports assignment statements and mathematical expressions.
 
 ```
->> x = 7 + 3    /* 10 */
->> y = x / 2    /* 5  */
->> z = x + y    /* 15 */
+FUNC main
+     x = 7 + 3;    /* 10 */
+     y = x / 2;    /* 5  */
+     z = x + y;    /* 15 */
+END
 ```
 ## Syntax rules in BNF
 ```
@@ -24,10 +26,16 @@ expr: term ((PLUS | MINUS) term)*
 
 assignment_statement : variable ASSIGN expr
 
-statement_list : statement
+statement_vector : statement
                 | statement SEMI statement_list
 
+function : FUNC ID statement_list END
+
+function_vector : function*
+
 ```
+
+
 ## Instructions
 Download the repo and run ```main.cpp``` to access the REPL.
 

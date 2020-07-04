@@ -179,7 +179,7 @@ public:
      
      @returns a vector of assignment statements (AST node pointers)
      */
-    statementsVector* statements_list() {
+    StatementsVector* statements_list() {
         std::vector<ASTNode*> list;
         list.push_back(assignment_statement());
 
@@ -188,7 +188,7 @@ public:
 //            if (list.size() == 2) {
 //                error("2");
 //            }
-            if (currentToken.value != "") {
+            if (currentToken.value != "END") {
                 ASTNode* statement = assignment_statement();
                 
                 if (statement != NULL) {
@@ -198,9 +198,41 @@ public:
             
         }
 
-        return new statementsVector(list);
+        return new StatementsVector(list);
         
     }
+    
+    Function* func() {
+            
+        if (currentToken.tokenType == TOKENTYPE::FUNC) {
+            checkAndGetNxt(TOKENTYPE::FUNC);
+            Token id = currentToken;
+            checkAndGetNxt(TOKENTYPE::ID);
+
+            StatementsVector* contents = statements_list();
+            checkAndGetNxt(TOKENTYPE::END);
+
+            return new Function(contents, id);
+        }
+        error("No function found");
+        return NULL;
+    }
+    
+    FunctionVector* functionVector() {
+        
+        std::vector<Function*> list;
+        list.push_back(func());
+            
+        while (currentToken.tokenType == TOKENTYPE::FUNC) {
+            
+            list.push_back(func());
+            
+        }
+        
+        return new FunctionVector(list);
+    }
+    
+    
 
     /*
     variable : ID ASSIGN expr

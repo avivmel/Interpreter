@@ -26,6 +26,9 @@ enum class TOKENTYPE {
     ASSIGN,
     ID, // name of a variable
     SEMI,
+    FUNC,
+    END,
+    VOID,
     EOL
 };
 
@@ -58,8 +61,17 @@ std::string EnumToString(TOKENTYPE tokenType) {
             return "ASSIGN";
         case TOKENTYPE::ID:
             return "ID";
+
         case TOKENTYPE::SEMI:
             return "SEMI";
+        case TOKENTYPE::FUNC:
+            return "FUNC";
+        case TOKENTYPE::END:
+            return "END";
+        case TOKENTYPE::VOID:
+            return "VOID";
+
+
         case TOKENTYPE::EOL:
             return "EOL";
     }

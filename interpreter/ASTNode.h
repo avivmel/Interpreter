@@ -74,11 +74,35 @@ class ASTNode {
 
 
 
-class statementsVector : public ASTNode {
+class StatementsVector : public ASTNode {
    public:
    std::vector<ASTNode*> vector;
+    
+    StatementsVector() {
+        
+    }
 
-   statementsVector(std::vector<ASTNode*> Vector) {
+   StatementsVector(std::vector<ASTNode*> Vector) {
+       vector = Vector;
+   }
+};
+
+class Function : public ASTNode {
+    public:
+    StatementsVector* vector;
+    std::string ID;
+
+   Function(StatementsVector* Vector, Token id) {
+       vector = Vector;
+       ID = id.value;
+   }
+};
+
+class FunctionVector : public ASTNode {
+   public:
+   std::vector<Function*> vector;
+
+   FunctionVector(std::vector<Function*> Vector) {
        vector = Vector;
    }
 };

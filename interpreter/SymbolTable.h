@@ -61,15 +61,29 @@ public:
     }
     
     /*
-     Adds a variable to GLOBAL_SYMBOL_TABLE map
+     Adds a variables from StatementsVector to GLOBAL_SYMBOL_TABLE map
      */
-    void addVars(statementsVector* statementVectorNode) {
+    void addVarsFromStatementsVector(StatementsVector* statementVectorNode) {
         for (int i=0; i < statementVectorNode->vector.size(); i++) {
             
             std::string varID = statementVectorNode->vector[i]->left->token.value;
             TOKENTYPE type = getExprType(statementVectorNode->vector[i]->right);
             GLOBAL_SYMBOL_TABLE[varID] = type;
         }
+    }
+    
+    void AddFuncsFromFunctionVector(FunctionVector* functionVector) {
+        for (int i=0; i < functionVector->vector.size(); i++) {
+            
+            Function* function = functionVector->vector[i];
+            
+            addVarsFromStatementsVector(function->vector);
+            
+            GLOBAL_SYMBOL_TABLE[function->ID] = TOKENTYPE::VOID;
+            
+            
+        }
+        
     }
     
     /*
@@ -82,6 +96,19 @@ public:
         error("Variable used has not declared");
         return TOKENTYPE::EMPTY;
     }
+    
+    friend std::ostream& operator<<(std::ostream &os, SymbolTable& st) {
+        
+        for (auto const& pair: st.GLOBAL_SYMBOL_TABLE) {
+            std::cout << "{" << pair.first << ": " << EnumToString(pair.second) << "}\n";
+        }
+
+        os << "";
+        return os;
+    }
+
+    
+
     
     
     

@@ -33,24 +33,27 @@ int main(int argc, const char * argv[]) {
        getline(std::cin, text);
 
        Parser parser(text);
-       statementsVector* tree = parser.statements_list();
+       FunctionVector* functionVector = parser.functionVector();
+       //parser.error(" ");
+
        // std::cout << typeid(tree).name() << "\n";
        SymbolTable table = SymbolTable();
-       table.addVars(tree);
+       table.AddFuncsFromFunctionVector(functionVector);
+
+       std::cout << table;
        
        // std::cout << "x type = " << EnumToString(table.GLOBAL_SYMBOL_TABLE["x"]);
 
 
-       for (int i=0; i < tree->vector.size(); i++) {
-           std::cout << tree->vector[i]->left->token.value << " value = " << parser.visit_expr(tree->vector[i]) << "\n\n";
-           std::cout << tree->vector[i];
-           parser.deallocTree(tree->vector[i]);
-           std::cout << "\n";
-       }
-       //interpreter.error(" ");
+//       for (int i=0; i < functionVector->vector.size(); i++) {
+//           std::cout << functionVector->vector[i]->left->token.value << " value = " << parser.visit_expr(tree->vector[i]) << "\n\n";
+//           std::cout << functionVector->vector[i];
+//           parser.deallocTree(functionVector->vector[i]);
+//           std::cout << "\n";
+//       }
+       //parser.error(" ");
        //interpreter.deallocTree(tree);
        std::cout << "\n\n";
-       //interpreter.error();
    }
 
     

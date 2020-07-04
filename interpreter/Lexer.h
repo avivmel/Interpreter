@@ -174,6 +174,16 @@ public:
                 std::string foundWord = word();
 
                 // TODO: check if foundWord is a keyword
+                
+                if (foundWord == "FUNC") {
+                    Token token = Token(TOKENTYPE::FUNC, foundWord);
+                    return token;
+                }
+                
+                if (foundWord == "END") {
+                    Token token = Token(TOKENTYPE::END, foundWord);
+                    return token;
+                }
 
                 Token token = Token(TOKENTYPE::ID, foundWord);
                 return token;
