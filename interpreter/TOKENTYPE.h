@@ -29,6 +29,7 @@ enum class TOKENTYPE {
     FUNC,
     END,
     VOID,
+    FUNCCALL,
     EOL
 };
 
@@ -70,6 +71,8 @@ std::string EnumToString(TOKENTYPE tokenType) {
             return "END";
         case TOKENTYPE::VOID:
             return "VOID";
+        case TOKENTYPE::FUNCCALL:
+            return "FUNCCALL";
 
 
         case TOKENTYPE::EOL:

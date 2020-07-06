@@ -6,10 +6,16 @@ This is a simple interpreted programming language implamented in C++.
 The REPL currently only supports assignment statements and mathematical expressions.
 
 ```
+FUNC defineY
+     y = 5;
+END
+
 FUNC main
      x = 7 + 3;    /* 10 */
-     y = x / 2;    /* 5  */
+     defineY();    /* Functions currently operate on the global scope  */
      z = x + y;    /* 15 */
+
+
 END
 ```
 ## Syntax rules in BNF
@@ -18,7 +24,8 @@ factor : PLUS factor
      | MINUS factor
      | INTEGER
      | LPAREN expr RPAREN
-     | variable
+     | Variable
+     | Func call
 
 term: factor ((MUL | DIV) factor)*
 

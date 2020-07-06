@@ -66,13 +66,16 @@ public:
     void addVarsFromStatementsVector(StatementsVector* statementVectorNode) {
         for (int i=0; i < statementVectorNode->vector.size(); i++) {
             
-            std::string varID = statementVectorNode->vector[i]->left->token.value;
-            TOKENTYPE type = getExprType(statementVectorNode->vector[i]->right);
-            GLOBAL_SYMBOL_TABLE[varID] = type;
+            if (statementVectorNode->vector[i]->token.tokenType == TOKENTYPE::ASSIGN) {
+                std::string varID = statementVectorNode->vector[i]->left->token.value;
+                TOKENTYPE type = getExprType(statementVectorNode->vector[i]->right);
+                GLOBAL_SYMBOL_TABLE[varID] = type;
+            }
+                
         }
     }
     
-    void AddFuncsFromFunctionVector(FunctionVector* functionVector) {
+    void addFuncsFromFunctionVector(FunctionVector* functionVector) {
         for (int i=0; i < functionVector->vector.size(); i++) {
             
             Function* function = functionVector->vector[i];

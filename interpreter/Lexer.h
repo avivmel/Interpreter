@@ -172,6 +172,8 @@ public:
             }
             if (isalpha(current_char)) {
                 std::string foundWord = word();
+                
+                //std::cout << "foundWord: " << foundWord << "current " << current_char << " peek " << peek() << "\n";
 
                 // TODO: check if foundWord is a keyword
                 
@@ -182,6 +184,11 @@ public:
                 
                 if (foundWord == "END") {
                     Token token = Token(TOKENTYPE::END, foundWord);
+                    return token;
+                }
+
+                if (current_char == '(') {
+                    Token token = Token(TOKENTYPE::FUNCCALL, foundWord);
                     return token;
                 }
 

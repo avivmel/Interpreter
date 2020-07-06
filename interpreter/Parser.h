@@ -96,6 +96,12 @@ public:
             ASTNode* parenContents = evalExpr();
             checkAndGetNxt(TOKENTYPE::RPAREN);
             return parenContents;
+        } else if (token.tokenType == TOKENTYPE::FUNCCALL) {
+            checkAndGetNxt(TOKENTYPE::FUNCCALL);
+            checkAndGetNxt(TOKENTYPE::LPAREN);
+            checkAndGetNxt(TOKENTYPE::RPAREN);
+            ASTNode* node = new ASTNode(NULL, NULL, token);
+            return node;
         }
         
         error("Token(" + EnumToString(currentToken.tokenType) + ", " + currentToken.value + ") passed to factor()");
@@ -164,6 +170,10 @@ public:
             ASTNode* variable = var();
             return variable;
         }
+        
+         if (currentToken.tokenType == TOKENTYPE::FUNCCALL) {
+             return factor();
+         }
         ASTNode* expr = evalExpr();
         std::cout << "xpr " << expr->token << "\n";
         
