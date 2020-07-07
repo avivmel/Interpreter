@@ -3,14 +3,14 @@
 This is a simple interpreted programming language implamented in C++.
 
 ## The Language
-The REPL currently only supports assignment statements and mathematical expressions.
+Currently only assignment statements, void functions, and mathematical expressions are supported. All variables are stored in a global scope.
 
 ```
 FUNC defineY
      y = 5;
 END
 
-FUNC main
+FUNC main 
      x = 7 + 3;    /* 10 */
      defineY();    /* Functions currently operate on the global scope  */
      z = x + y;    /* 15 */
@@ -44,5 +44,5 @@ function_vector : function*
 
 
 ## Instructions
-Download the repo and run ```main.cpp``` to access the REPL.
+Download the repo, create a ```main.txt``` file in the ```interpreter/``` dir for the ```main``` function , and compile ```main.cpp``` to run the program.
 

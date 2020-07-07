@@ -1,0 +1,11 @@
+FUNC defineY
+     y = 5;
+END 
+
+FUNC main
+     x = 7 + 3;    /* 10 */
+     defineY();    /* Functions currently operate on the global scope  */
+     z = x + y;    /* 15 */
+
+
+END

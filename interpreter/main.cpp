@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <map>
 #include <vector>
@@ -139,56 +140,61 @@ public:
 
 int main(int argc, const char * argv[]) {
 
+    std::string line;
+    std::string text;
+
+    // Read program from file
+    std::ifstream readFile("main.txt");
+    while (std::getline (readFile, line)) {
+        text += line;
+    }
+    readFile.close();
+    
+    // workaround for xcode (dosen't allow fstream)
+    text = "FUNC defineY     y = 5;END FUNC main     x = 7 + 3;    /* 10 */     defineY();    /* Functions currently operate on the global scope  */     z = x + y;    /* 15 */END";
 
 
-   while (true) {
-       std::cout << ">> ";
-       
-       std::string text;
-       getline(std::cin, text);
 
-       Parser parser(text);
-       FunctionVector* functionVector = parser.functionVector();
-       //parser.error(" ");
+    Parser parser(text);
+    FunctionVector* functionVector = parser.functionVector();
+    //parser.error(" ");
 
-       // std::cout << typeid(tree).name() << "\n";
-       SymbolTable table = SymbolTable();
-       table.addFuncsFromFunctionVector(functionVector);
+    // std::cout << typeid(tree).name() << "\n";
+    SymbolTable table = SymbolTable();
+    table.addFuncsFromFunctionVector(functionVector);
 
-       // std::cout << table;
+    // std::cout << table;
 
-       Interpreter interpreter = Interpreter(functionVector, table);
-       interpreter.visitFunctionVector(functionVector);
-       interpreter.printGM();
+    Interpreter interpreter = Interpreter(functionVector, table);
+    interpreter.visitFunctionVector(functionVector);
+    interpreter.printGM();
 //       parser.error(" ");
-       
-       
-       // std::cout << "x type = " << EnumToString(table.GLOBAL_SYMBOL_TABLE["x"]);
+    
+    
+    // std::cout << "x type = " << EnumToString(table.GLOBAL_SYMBOL_TABLE["x"]);
 
 
-       for (int i=0; i < functionVector->vector.size(); i++) {
+    for (int i=0; i < functionVector->vector.size(); i++) {
 
-           std::string funcID = functionVector->vector[i]->ID;
-           Function* f = functionVector->vector[i];
-           
-           for (int i=0; i < f->vector->vector.size(); i++) {
-               
-               std::cout << f->vector->vector[i];
-           
-           
+        std::string funcID = functionVector->vector[i]->ID;
+        Function* f = functionVector->vector[i];
+        
+        for (int i=0; i < f->vector->vector.size(); i++) {
+            
+            std::cout << f->vector->vector[i];
+        
+        
 
-       }
-               
+    }
+            
 //           std::cout << functionVector->vector[i]->left->token.value << " value = " << parser.visit_expr(tree->vector[i]) << "\n\n";
 //           std::cout << functionVector->vector[i];
 //           parser.deallocTree(functionVector->vector[i]);
 //           std::cout << "\n";
-       }
-       //parser.error(" ");
-       //interpreter.deallocTree(tree);
-       std::cout << "\n\n";
-   }
-
+    }
+    //parser.error(" ");
+    //interpreter.deallocTree(tree);
+    std::cout << "\n\n";
     
 
     
